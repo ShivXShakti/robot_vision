@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 import rclpy
 from rclpy.node import Node
-from dualarm_custom_msgs.msg import PoseEuler 
+from dualarm_custom_msgs.msg import PoseEuler, PoseEulerArray 
 from depthai_ros_msgs.msg import TrackDetection2DArray
 
 class PoseEulerPublisher(Node):
@@ -16,6 +16,8 @@ class PoseEulerPublisher(Node):
             self.listener_callback, 10)
     
     def listener_callback(self, msg):
+        poses_msg = PoseEulerArray()
+        poses = []
         for detection in msg.detections:
             if not detection.results:
                 continue
@@ -34,18 +36,20 @@ class PoseEulerPublisher(Node):
             status = detection.tracking_status
 
             pose = PoseEuler()
+            pose.name = class_id
             pose.x = pos.x
             pose.y = pos.y
             pose.z = pos.z
             pose.alpha = 0.0
             pose.beta  = 0.0
             pose.gamma = 0.0
+            poses.append(pose)
 
-            self.publisher_.publish(pose)
-            self.get_logger().info(
-                f"Publishing: x={pose.x:.2f}, y={pose.y:.2f}, z={pose.z:.2f}, "
-                f"α={pose.alpha:.2f}, β={pose.beta:.2f}, γ={pose.gamma:.2f}"
-            )
+        poses_msg.poses = poses
+        self.publisher_.publish(poses_msg)
+        self.get_logger().info(
+            f"detections:{poses_msg.poses}"
+        )
 
 def main(args=None):
     rclpy.init(args=args)
