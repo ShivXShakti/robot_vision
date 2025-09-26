@@ -2,7 +2,7 @@
 import rclpy
 from rclpy.node import Node
 from dualarm_custom_msgs.msg import PoseEuler 
-from depthai_ros_poses.pose import TrackDetection2DArray
+from depthai_ros_msgs.msg import TrackDetection2DArray
 
 class PoseEulerPublisher(Node):
     def __init__(self):

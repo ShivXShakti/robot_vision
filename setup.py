@@ -23,6 +23,7 @@ setup(
             'obj_pose_publisher = robot_vision.obj_pose_publisher:main',
             'obj_pose_sub = robot_vision.obj_pose_sub:main',
             'poseeuler_test = robot_vision.poseeuler_test:main',
+            'e_pose_euler_pub = robot_vision.e_pose_euler_pub:main',
         ],
     },
 )
