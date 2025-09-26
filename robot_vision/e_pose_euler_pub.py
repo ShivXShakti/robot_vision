@@ -11,7 +11,7 @@ class PoseEulerPublisher(Node):
         self.get_logger().info("PoseEuler Publisher Started...")
         
     def do_not_modify(self):
-        self.publisher_ = self.create_publisher(PoseEuler, 'pose_euler', 10)
+        self.publisher_ = self.create_publisher(PoseEulerArray, 'pose_euler', 10)
         self.create_subscription(TrackDetection2DArray, '/color/yolo_Spatial_tracklets',
             self.listener_callback, 10)
     
@@ -36,7 +36,7 @@ class PoseEulerPublisher(Node):
             status = detection.tracking_status
 
             pose = PoseEuler()
-            pose.name = class_id
+            pose.name = f"obj_{class_id}"
             pose.x = pos.x
             pose.y = pos.y
             pose.z = pos.z
@@ -47,9 +47,10 @@ class PoseEulerPublisher(Node):
 
         poses_msg.poses = poses
         self.publisher_.publish(poses_msg)
-        self.get_logger().info(
+        print(f"detections:{poses_msg.poses}")
+        """self.get_logger().info(
             f"detections:{poses_msg.poses}"
-        )
+        )"""
 
 def main(args=None):
     rclpy.init(args=args)
