@@ -22,6 +22,7 @@ setup(
         'console_scripts': [
             'obj_pose_publisher = robot_vision.obj_pose_publisher:main',
             'obj_pose_sub = robot_vision.obj_pose_sub:main',
+            'poseeuler_test = robot_vision.poseeuler_test:main',
         ],
     },
 )
