@@ -5,7 +5,7 @@ from geometry_msgs.msg import PoseStamped
 from tf2_ros import Buffer, TransformListener
 import tf2_geometry_msgs
 import time
-from depthai_ros_msgs.msg import SpatialDetectionArray  # adjust if different
+from depthai_ros_msgs.msg import TrackDetection2DArray  # adjust if different
 
 
 class ObjectPoseTransformer(Node):
@@ -15,13 +15,13 @@ class ObjectPoseTransformer(Node):
         self.tf_listener = TransformListener(self.tf_buffer, self)
 
         self.create_subscription(
-            SpatialDetectionArray,
+            TrackDetection2DArray,
             '/color/yolo_Spatial_tracklets',
             self.listener_callback,
             10
         )
         self.publisher = self.create_publisher(PoseStamped, 'object_pose_torso', 10)
-        self.get_logger().info("ObjectPoseTransformer initialized")
+        self.get_logger().info("ObjectPoseTransformer YOLO initialized")
 
     def listener_callback(self, msg):
         if not msg.detections:
@@ -36,7 +36,9 @@ class ObjectPoseTransformer(Node):
         pose_stamped.header.stamp = rclpy.time.Time().to_msg()
         pose_stamped.header.frame_id = msg.header.frame_id
         pose_stamped.pose = pose
-        try:
+        self.publisher.publish(pose_stamped)
+
+        """try:
             #msg.header.stamp = rclpy.time.Time().to_msg()
 
             transformed_pose = self.tf_buffer.transform(
@@ -54,7 +56,7 @@ class ObjectPoseTransformer(Node):
             )
 
         except Exception as e:
-            self.get_logger().warn(f"Could not transform pose: {e}")
+            self.get_logger().warn(f"Could not transform pose: {e}")"""
 
 def main(args=None):
     rclpy.init(args=args)

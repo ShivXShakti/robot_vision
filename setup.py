@@ -25,6 +25,9 @@ setup(
             'poseeuler_test = robot_vision.poseeuler_test:main',
             'e_pose_euler_pub = robot_vision.e_pose_euler_pub:main',
             'e_pose_euler_pub_vis = robot_vision.e_pose_euler_pub_vis:main',
+            'dummy_pose = robot_vision.dummy_pose:main',
+            'obj_wrt_torso = robot_vision.obj_wrt_torso:main',
+            'pose_publisher = robot_vision.pose_publisher:main',
         ],
     },
 )
